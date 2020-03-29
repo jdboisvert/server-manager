@@ -3,6 +3,9 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * This class is mainly used to provide users for the application for testing purposes
+ */ 
 class UserSeeder extends Seeder
 {
     /**
