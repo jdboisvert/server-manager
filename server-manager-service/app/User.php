@@ -34,6 +34,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
     
     /**
+     * Get all of the trips for the user.
+     */
+    public function serverConnections()
+    {
+        return $this->hasMany(ServerConnection::class);
+    }
+    
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
