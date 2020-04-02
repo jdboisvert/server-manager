@@ -15,13 +15,31 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/key', function() {
+    return \Illuminate\Support\Str::random(32);
+});
 
-// API route group
+
+//Public API route group
 $router->group(['prefix' => 'api'], function () use ($router) {
-   // Matches "/api/register
+   // Matches /api/register
    $router->post('register', 'AuthController@register');
    
-   // Matches "/api/login
+   // Matches /api/login
    $router->post('login', 'AuthController@login');
 
 });
+
+//Private API route group (must provide token)
+$router->group(
+    ['prefix' => 'api', 'middleware' => 'jwt.auth'], 
+    function() use ($router) {
+        $router->post('list', 'ServerConnectionController@getAllServerConnections');
+        
+        $router->post('create', 'ServerConnectionController@createServerConnection');
+        $router->post('server/details/{id}', 'ServerConnectionController@readServerConnection');
+        $router->post('update', 'ServerConnectionController@updateServerConnection');
+        $router->post('delete', 'ServerConnectionController@deleteServerConnection');
+        
+    }
+);
