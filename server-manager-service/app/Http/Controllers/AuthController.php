@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use  App\User;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -20,7 +21,7 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required',
         ]);
 
         try {
