@@ -34,7 +34,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 $router->group(
     ['prefix' => 'api', 'middleware' => 'jwt.auth'], 
     function() use ($router) {
-        $router->post('list', 'ServerConnectionController@getAllServerConnections');
+        $router->get('list', 'ServerConnectionController@getAllServerConnections');
         
         $router->post('create', 'ServerConnectionController@createServerConnection');
         $router->get('server/details/{id}', 'ServerConnectionController@readServerConnection');
