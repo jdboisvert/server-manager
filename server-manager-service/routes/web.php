@@ -20,12 +20,20 @@ $router->get('/key', function() {
 });
 
 
-// API route group
+//Public API route group
 $router->group(['prefix' => 'api'], function () use ($router) {
-   // Matches "/api/register
+   // Matches /api/register
    $router->post('register', 'AuthController@register');
    
-   // Matches "/api/login
+   // Matches /api/login
    $router->post('login', 'AuthController@login');
 
 });
+
+//Private API route group 
+$router->group(
+    ['prefix' => 'api', 'middleware' => 'jwt.auth'], 
+    function() use ($router) {
+        $router->post('test', 'ServerConnectionController@test');
+    }
+);
