@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use  App\User;
+use App\ServerConnection; 
 
 class ServerConnectionController extends Controller
 {
@@ -24,6 +25,10 @@ class ServerConnectionController extends Controller
      */
     public function getAllServerConnections(Request $request){
 
+        $user = $request->user();
+        $servers = ServerConnection::where('user_id', $user->id)->get();
+        
+        return response()->json(['servers' => $servers], 200);
 
     }
     
