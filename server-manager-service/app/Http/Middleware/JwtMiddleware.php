@@ -37,8 +37,6 @@ class JwtMiddleware
         $user = User::find($credentials->sub);
 
         $request->auth = $user;
-        
-        console.log('hi');
 
         return $next($request);
     }

@@ -30,10 +30,16 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 });
 
-//Private API route group 
+//Private API route group (must provide token)
 $router->group(
     ['prefix' => 'api', 'middleware' => 'jwt.auth'], 
     function() use ($router) {
-        $router->post('test', 'ServerConnectionController@test');
+        $router->post('list', 'ServerConnectionController@getAllServerConnections');
+        
+        $router->post('create', 'ServerConnectionController@createServerConnection');
+        $router->post('server/details/{id}', 'ServerConnectionController@readServerConnection');
+        $router->post('update', 'ServerConnectionController@updateServerConnection');
+        $router->post('delete', 'ServerConnectionController@deleteServerConnection');
+        
     }
 );

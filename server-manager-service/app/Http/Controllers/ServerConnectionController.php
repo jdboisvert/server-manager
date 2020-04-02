@@ -10,13 +10,7 @@ class ServerConnectionController extends Controller
     
     public function test(Request $request){
         
-        //Is this user there? 
-        
-        //$user = Auth::user();
-
         $user = $request->user();
-        
-        //$user = $request->auth; 
         
         return response()->json(['user' => $user, 'message' => 'IT WORKED'], 201);
         
@@ -47,9 +41,10 @@ class ServerConnectionController extends Controller
      * Read a single server connection
      *
      * @param  Request  $request
+     * @param $id holding the id of the server in question
      * @return Response
      */
-    public function readServerConnection(Request $request){
+    public function readServerConnection(Request $request, $id){
         
     }
     
