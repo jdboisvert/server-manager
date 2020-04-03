@@ -97,8 +97,6 @@ class ServerConnectionController extends Controller
      */
     public function readServerConnection(Request $request, $id){
         
-        $server = ServerConnection::findOrFail($id);
-        
         try {
             
             $server = ServerConnection::find($id);
@@ -120,10 +118,10 @@ class ServerConnectionController extends Controller
             }
             
             return response()->json(['server' => $server], 200);
-
             
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Problem retrieving items'], 500);
+            error_log($e->getMessage());
+            return response()->json(['message' => 'Problem retrieving server'], 500);
         }
         
     }
@@ -156,7 +154,7 @@ class ServerConnectionController extends Controller
                 return response()->json(['message' => 'Not authorized.'], 401);
             }
 
-            $server = ServerConnection::find($request->input('connection_name'));
+            $server = ServerConnection::find($id);
             
             if(!$server){
                 return response()->json(['message' => 'Server not found'], 404);
@@ -188,11 +186,11 @@ class ServerConnectionController extends Controller
 
             $server->save();
 
-            return response()->json(['server' => $server, 'message' => 'Updated successfully'], 201);
+            return response()->json(['server' => $server, 'message' => 'Updated successfully'], 200);
 
         } catch (\Exception $e) {
             error_log($e->getMessage());
-            return response()->json(['message' => 'Server registration failed!'], 409);
+            return response()->json(['message' => 'Server update failed!'], 409);
         }
     }
     
@@ -200,10 +198,39 @@ class ServerConnectionController extends Controller
      * Delete a server connection
      *
      * @param  Request  $request
+     * @param  $id holding the id of the server in question
      * @return Response
      */
     public function deleteServerConnection(Request $request){
-        //TODO
+        
+        try {
+            
+            $server = ServerConnection::find($id);
+            
+            if(!$server){
+                return response()->json(['message' => 'Server not found'], 404);
+            } 
+            
+            $user = $request->user();
+            
+            if(!$user){
+                //Should never reach this with middleware
+                error_log('User got to method through middleware');
+                return response()->json(['message' => 'Not authorized.'], 401);
+            }
+            
+            if($user->id != $server->user_id){
+                return response()->json(['message' => 'Not authorized to delete server'], 403);
+            }
+            
+            $server->delete();
+            
+            return response()->json(['message' => 'Server deleted successfully'], 200);
+            
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return response()->json(['message' => 'Problem retrieving server'], 500);
+        }
     }
 
 
