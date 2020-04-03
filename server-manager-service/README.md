@@ -14,6 +14,7 @@ The API supports the following requests:
   * Responses:
     * 201: Register successfully
     * 409: Error registering
+
 * Log into the server and this generates a JWT token needed for future requests:
   * Method: POST
   * URL: /api/login
@@ -24,6 +25,7 @@ The API supports the following requests:
     * 200: Login successfully
       * token: used to be able to make future API calls
     * 400: Error with login where email does not exist or email and password are wrong
+
 * Create server connections
   * Method: POST
   * URL: /api/create?token=your token
@@ -39,6 +41,7 @@ The API supports the following requests:
       * server: holding values of the server except password
     * 401: Unauthorized
     * 409: Error registering server
+
 * Get a list of all the server connection of an authenticated user
   * Method: GET
   * URL: /api/list?token=your token
@@ -58,6 +61,7 @@ The API supports the following requests:
     * 403: Forbidden to access server since it does not belong to user
     * 404: Server does not exist
     * 500: Error getting server
+
 * Update details of a server connection
   * Method: PUT
   * URL: /api/server/update/{id}?token=your token
@@ -76,6 +80,7 @@ The API supports the following requests:
     * 403: Forbidden to access server since it does not belong to user
     * 404: Server does not exist
     * 409: Error updatting server
+
 * Delete a server connection
   * Method: DELETE
   * URL: /api/server/delete/{id}?token=your token
@@ -86,3 +91,24 @@ The API supports the following requests:
     * 403: Forbidden to access server since it does not belong to user
     * 404: Server does not exist
     * 500: Error deleting server
+
+## Run unit tests
+vendor/bin/phpunit
+
+## Run project locally
+php -S localhost:8000 -t public
+
+## After cloning project
+1. Run the 'composer install' command
+2. Run the following command to generate a .env file: cp .env.example .env
+3. Generate the needed key: php artisan key:generate
+4. Generate the JWT secret key: php artisan jwt:secret
+5. Create a database for the application (ex: Name it 'server_manager')
+6. In the .env file fill in the DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, and DB_PASSWORD for your database
+7. Generate/Migrate the tables: php artisan migrate
+8. Seed database with the test data: php artisan db:seed
+[Source for more details ](https://devmarketer.io/learn/setup-laravel-project-cloned-github-com/)
+
+## Main test account
+* Username: jeff@test.com
+* Password: password
