@@ -9,6 +9,9 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\ExpiredException;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+/**
+ * Used to handle the login and registering of the service
+ */ 
 class AuthController extends Controller
 {
     
@@ -30,7 +33,7 @@ class AuthController extends Controller
     }
     
     /**
-     * Store a new user.
+     * Create a new user.
      *
      * @param  Request  $request
      * @return Response

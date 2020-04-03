@@ -1,24 +1,114 @@
-# Lumen PHP Framework
+# Server Manager Service
+This service allows users to perform several accounts to manager an inventory of server connections. 
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+## REST API details
+A REST API which is validated via JWT tokens using the Lumen Framework. 
+The API supports the following requests:
+* Register to the service: 
+  * Method: POST
+  * URL: /api/register
+  * Parameters:
+    * name: name of the user (required)
+    * username: username used to login (required)
+    * password: password used to login (required)
+  * Responses:
+    * 201: Register successfully
+    * 409: Error registering
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+* Log into the server and this generates a JWT token needed for future requests:
+  * Method: POST
+  * URL: /api/login
+  * Parameters:
+    * username: username used to login (required)
+    * password: password used to login (required)
+  * Responses:
+    * 200: Login successfully
+      * token: used to be able to make future API calls
+    * 400: Error with login where email does not exist or email and password are wrong
 
-## Official Documentation
+* Create server connections
+  * Method: POST
+  * URL: /api/create?token=your token
+  * Parameters:
+    * connection_name: name of the connection (ex: 'Test Connection')(required)
+    * connection_method: how to login to the server (ex: 'SSH') (required)
+    * hostname: hostname of server (ex: 'test.test.com') (required)
+    * port: port for the server (ex: 3556) (required)
+    * username: username to login to server ('user') required)
+    * password: password used to login to server ('password') (required)
+  * Responses:
+    * 201: Server created successfully
+      * server: holding values of the server except password
+    * 401: Unauthorized
+    * 409: Error registering server
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+* Get a list of all the server connection of an authenticated user
+  * Method: GET
+  * URL: /api/list?token=your token
+  * Responses:
+    * 200: Server created successfully
+      * servers: holding an array of all the servers
+    * 401: Unauthorized
+    * 500: Error getting servers
+* Read details of a server connection
+  * Method: GET
+  * URL: /api/server/details/{id}?token=your token
+  * {id}: The id of the server in question
+  * Responses:
+    * 200: Server created successfully
+      * server: holding details of the server
+    * 401: Unauthorized
+    * 403: Forbidden to access server since it does not belong to user
+    * 404: Server does not exist
+    * 500: Error getting server
 
-## Contributing
+* Update details of a server connection
+  * Method: PUT
+  * URL: /api/server/update/{id}?token=your token
+  * {id}: The id of the server in question
+  * Parameters:
+    * connection_name: name of the connection (ex: 'Test Connection')(required if no other values)
+    * connection_method: how to login to the server (ex: 'SSH') (required if no other values)
+    * hostname: hostname of server (ex: 'test.test.com') (required if no other values)
+    * port: port for the server (ex: 3556) (required if no other values)
+    * username: username to login to server ('user') (required if no other values)
+    * password: password used to login to server ('password') (required if no other values)
+  * Responses:
+    * 200: Server updated successfully
+      * server: holding details of the server now updated
+    * 401: Unauthorized
+    * 403: Forbidden to access server since it does not belong to user
+    * 404: Server does not exist
+    * 409: Error updatting server
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* Delete a server connection
+  * Method: DELETE
+  * URL: /api/server/delete/{id}?token=your token
+  * {id}: The id of the server in question
+  * Responses:
+    * 200: Server deleted successfully
+    * 401: Unauthorized
+    * 403: Forbidden to access server since it does not belong to user
+    * 404: Server does not exist
+    * 500: Error deleting server
 
-## Security Vulnerabilities
+## Run unit tests
+vendor/bin/phpunit
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## Run project locally
+php -S localhost:8000 -t public
 
-## License
+## After cloning project
+1. Run the 'composer install' command
+2. Run the following command to generate a .env file: cp .env.example .env
+3. Generate the needed key: php artisan key:generate
+4. Generate the JWT secret key: php artisan jwt:secret
+5. Create a database for the application (ex: Name it 'server_manager')
+6. In the .env file fill in the DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, and DB_PASSWORD for your database
+7. Generate/Migrate the tables: php artisan migrate
+8. Seed database with the test data: php artisan db:seed
+[Source for more details ](https://devmarketer.io/learn/setup-laravel-project-cloned-github-com/)
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Main test account
+* Username: jeff@test.com
+* Password: password

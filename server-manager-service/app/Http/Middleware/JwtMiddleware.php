@@ -10,6 +10,9 @@ use Firebase\JWT\ExpiredException;
 
 class JwtMiddleware
 {
+    /**
+     * Handle request and validate there is a valid token 
+     */ 
     public function handle($request, Closure $next, $guard = null)
     {
         $token = $request->get('token');
