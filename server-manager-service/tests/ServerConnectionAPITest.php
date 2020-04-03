@@ -282,7 +282,7 @@ class ServerConnectionAPITest extends TestCase
 
     }
     
-        /**
+    /**
      * A test to validate the correct 
      * HTTP 200 is returned when updating a server with only connection_method
      * and response is in the correct format
@@ -314,6 +314,344 @@ class ServerConnectionAPITest extends TestCase
                     'user_id'
                 ]
         ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with only hostname
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerHostname(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "hostname"=> "test.test.com", 
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with only port
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerPort(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "port"=> 1886, 
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with only username
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerUsername(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "username"=> "new_username", 
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with only password
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerPassword(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "password"=> "new_password", 
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with all parameters
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerAllParameters(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "connection_name"=> "Test 1", 
+            "connection_method"=> "SSH", 
+            "hostname"=> "amazon.ec2.something.com", 
+            "port"=> 3556, 
+            "username"=> "username", 
+            "password"=> "password"
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 422 is returned when updating a server with no parameters
+     * @return void
+     */
+    public function testUpdateServerNoParameters(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(422);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 401 is returned when updating a server unauthorized
+     * @return void
+     */
+    public function testUpdateServerUnAuthorized(){
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "connection_name"=> "Test 1", 
+            "connection_method"=> "SSH", 
+            "hostname"=> "amazon.ec2.something.com", 
+            "port"=> 3556, 
+            "username"=> "username", 
+            "password"=> "password"
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1", $data);
+        
+        $response->seeStatusCode(401);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 403 is returned when updating a server that does not belong to them
+     * @return void
+     */
+    public function testUpdateServerNotBelongingToUser(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "connection_name"=> "Test 1", 
+            "connection_method"=> "SSH", 
+            "hostname"=> "amazon.ec2.something.com", 
+            "port"=> 3556, 
+            "username"=> "username", 
+            "password"=> "password"
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/4?token=$token", $data);
+        
+        $response->seeStatusCode(403);
+
+    }
+    
+        
+    /**
+     * A test to validate the correct 
+     * HTTP 404 is returned when updating a server that does 
+     * not exist
+     * @return void
+     */
+    public function testUpdateServerThatDoesNotExist(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "connection_name"=> "Test 1", 
+            "connection_method"=> "SSH", 
+            "hostname"=> "amazon.ec2.something.com", 
+            "port"=> 3556, 
+            "username"=> "username", 
+            "password"=> "password"
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/166?token=$token", $data);
+        
+        $response->seeStatusCode(404);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when deleting a valid server
+     * @return void
+     */
+    public function testDeleteServer(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('DELETE', "/api/server/delete/1?token=$token");
+        
+        $response->seeStatusCode(200);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 404 is returned when deleting a server that does not exist
+     * @return void
+     */
+    public function testDeleteServerThatDoesNotExist(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('DELETE', "/api/server/delete/166?token=$token");
+        
+        $response->seeStatusCode(404);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 403 is returned when deleting a server that does not belong to the user
+     * @return void
+     */
+    public function testDeleteServerThatDoesNotBelongToTheUser(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('DELETE', "/api/server/delete/4?token=$token");
+        
+        $response->seeStatusCode(403);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 401 is returned when deleting a server not authorized
+     * @return void
+     */
+    public function testDeleteServerUnauthorized(){
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('DELETE', "/api/server/delete/1");
+        
+        $response->seeStatusCode(401);
 
     }
     
