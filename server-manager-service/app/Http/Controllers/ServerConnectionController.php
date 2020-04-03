@@ -23,10 +23,18 @@ class ServerConnectionController extends Controller
         
         try {
             $user = $request->user();
+            
+            if(!$user){
+                //Should never reach this with middleware
+                error_log('User got to method through middleware');
+                return response()->json(['message' => 'Not authorized.'], 401);
+            }
+            
             $servers = ServerConnection::where('user_id', $user->id)->get();
             
             return response()->json(['servers' => $servers], 200);
         } catch (\Exception $e) {
+            error_log($e->getMessage());
             return response()->json(['message' => 'Problem retrieving servers'], 500);
         }
 
@@ -52,6 +60,12 @@ class ServerConnectionController extends Controller
         try {
 
             $user = $request->user();
+            
+            if(!$user){
+                //Should never reach this with middleware
+                error_log('User got to method through middleware');
+                return response()->json(['message' => 'Not authorized.'], 401);
+            }
 
             $server = new ServerConnection;
             $server->connection_name = $request->input('connection_name');
@@ -68,7 +82,6 @@ class ServerConnectionController extends Controller
             return response()->json(['server' => $server, 'message' => 'Created successfully'], 201);
 
         } catch (\Exception $e) {
-            //return error message
             error_log($e->getMessage());
             return response()->json(['message' => 'Server registration failed!'], 409);
         }
@@ -87,8 +100,28 @@ class ServerConnectionController extends Controller
         $server = ServerConnection::findOrFail($id);
         
         try {
-            $server = ServerConnection::findOrFail($id);
+            
+            $server = ServerConnection::find($id);
+            
+            if(!$server){
+                return response()->json(['message' => 'Server not found'], 404);
+            } 
+            
+            $user = $request->user();
+            
+            if(!$user){
+                //Should never reach this with middleware
+                error_log('User got to method through middleware');
+                return response()->json(['message' => 'Not authorized.'], 401);
+            }
+            
+            if($user->id != $server->user_id){
+                return response()->json(['message' => 'Not authorized to view server'], 403);
+            }
+            
             return response()->json(['server' => $server], 200);
+
+            
         } catch (\Exception $e) {
             return response()->json(['message' => 'Problem retrieving items'], 500);
         }
@@ -99,10 +132,68 @@ class ServerConnectionController extends Controller
      * Update a server connection
      *
      * @param  Request  $request
+     * @param $id holding the id of the server in question
      * @return Response
      */
-    public function updateServerConnection(Request $request){
-        //TODO
+    public function updateServerConnection(Request $request, $id){
+        
+        $this->validate($request, [
+            'connection_name' => 'required_without_all:connection_method,hostname,port,username,password|string|max:255',
+            'connection_method' => 'required_without_all:connection_name,hostname,port,username,password|string|max:255',
+            'hostname' => 'required_without_all:connection_name,connection_name,port,username,password|string|max:255',
+            'port' => 'required_without_all:connection_name,connection_name,hostname,username,password|integer|min:0|max:65535',
+            'username' => 'required_without_all:connection_name,connection_name,hostname,port,password|string|max:255',
+            'password' => 'required_without_all:connection_name,connection_name,hostname,port,username|string|max:255'
+        ]);
+
+        try {
+
+            $user = $request->user();
+            
+            if(!$user){
+                //Should never reach this with middleware
+                error_log('User got to method through middleware');
+                return response()->json(['message' => 'Not authorized.'], 401);
+            }
+
+            $server = ServerConnection::find($request->input('connection_name'));
+            
+            if(!$server){
+                return response()->json(['message' => 'Server not found'], 404);
+            } 
+            
+            if($user->id != $server->user_id){
+                return response()->json(['message' => 'Not authorized to update server'], 403);
+            }
+            
+            if ($request->has('connection_name')){
+                $server->connection_name = $request->input('connection_name');
+            } 
+            if ($request->has('connection_method')){
+                $server->connection_name = $request->input('connection_method');
+            } 
+            if ($request->has('hostname')){
+                $server->connection_name = $request->input('hostname');
+            } 
+            if ($request->has('port')){
+                $server->connection_name = $request->input('port');
+            }
+            if ($request->has('username')){
+                $server->connection_name = $request->input('username');
+            }
+            if ($request->has('password')){
+                $plainPassword = $request->input('password');
+                $server->password = Hash::make($plainPassword);
+            }
+
+            $server->save();
+
+            return response()->json(['server' => $server, 'message' => 'Updated successfully'], 201);
+
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return response()->json(['message' => 'Server registration failed!'], 409);
+        }
     }
     
     /**
@@ -114,6 +205,7 @@ class ServerConnectionController extends Controller
     public function deleteServerConnection(Request $request){
         //TODO
     }
+
 
 
 }

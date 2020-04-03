@@ -38,7 +38,7 @@ $router->group(
         
         $router->post('create', 'ServerConnectionController@createServerConnection');
         $router->get('server/details/{id}', 'ServerConnectionController@readServerConnection');
-        $router->post('update', 'ServerConnectionController@updateServerConnection');
+        $router->post('server/update/{id}', 'ServerConnectionController@updateServerConnection');
         $router->post('delete', 'ServerConnectionController@deleteServerConnection');
         
     }
