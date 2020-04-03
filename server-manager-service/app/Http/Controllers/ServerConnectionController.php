@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use  App\User;
 use App\ServerConnection; 
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Used to handle logic associated with server connections. 
@@ -43,12 +44,14 @@ class ServerConnectionController extends Controller
             'connection_name' => 'required|string|max:255',
             'connection_method' => 'required|string|max:255',
             'hostname' => 'required|string|max:255',
-            'port' => 'required|integer|min:0|digits:10',
+            'port' => 'required|integer|min:0|max:65535',
             'username' => 'required|string|max:255',
             'password' => 'required|string|max:255'
         ]);
 
         try {
+
+            $user = $request->user();
 
             $server = new ServerConnection;
             $server->connection_name = $request->input('connection_name');
@@ -58,6 +61,7 @@ class ServerConnectionController extends Controller
             $server->username = $request->input('username');
             $plainPassword = $request->input('password');
             $server->password = Hash::make($plainPassword);
+            $server->user_id = $user->id; 
 
             $server->save();
 
@@ -65,6 +69,7 @@ class ServerConnectionController extends Controller
 
         } catch (\Exception $e) {
             //return error message
+            error_log($e->getMessage());
             return response()->json(['message' => 'Server registration failed!'], 409);
         }
         
