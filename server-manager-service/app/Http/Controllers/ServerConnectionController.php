@@ -201,7 +201,7 @@ class ServerConnectionController extends Controller
      * @param  $id holding the id of the server in question
      * @return Response
      */
-    public function deleteServerConnection(Request $request){
+    public function deleteServerConnection(Request $request, $id){
         
         try {
             
@@ -229,10 +229,9 @@ class ServerConnectionController extends Controller
             
         } catch (\Exception $e) {
             error_log($e->getMessage());
-            return response()->json(['message' => 'Problem retrieving server'], 500);
+            return response()->json(['message' => 'Problem deleting server'], 500);
         }
+        
     }
-
-
 
 }
