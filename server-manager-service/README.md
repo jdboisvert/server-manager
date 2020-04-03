@@ -14,7 +14,16 @@ The API supports the following requests:
   * Responses:
     * 201: Register successfully
     * 409: Error registering
-* Log into the server and this generates a JWT token needed for future requests
+* Log into the server and this generates a JWT token needed for future requests:
+  * Method: POST
+  * URL: /api/login
+  * Parameters:
+    * username: username used to login (required)
+    * password: password used to login (required)
+  * Responses:
+    * 200: Login successfully
+      * token: used to be able to make future API calls
+    * 400: Error with login where email or email and password are wrong
 * create server connections
 * get a list of all the server connection of an authenticated user
 * read details of a server connection
