@@ -7,11 +7,11 @@ The API supports the following requests:
 * Register to the service: 
   * Method: POST
   * URL: /api/register
-  * Paramaters:
+  * Parameters:
     * name: name of the user (required)
     * username: username used to login (required)
     * password: password used to login (required)
-  *Responses:
+  * Responses:
     * 201: Register successfully
     * 409: Error registering
 * Log into the server and this generates a JWT token needed for future requests
