@@ -13,6 +13,7 @@ class ServerConnectionAPITest extends TestCase
     private $emailOfTestUser = 'jeff@test.com';
     private $passwordOfTestUser = 'password';
     
+    //Do not effect current database
     use DatabaseTransactions;
     
     /**
@@ -243,6 +244,76 @@ class ServerConnectionAPITest extends TestCase
         $response = $this->actingAs($user, 'api')->json('GET', "/api/server/details/4?token=$token");
         
         $response->seeStatusCode(403);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with only connection_name
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerConnectionName(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "connection_name"=> "Test Update", 
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+        /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when updating a server with only connection_method
+     * and response is in the correct format
+     * @return void
+     */
+    public function testUpdateServerConnectionMethod(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $data = [
+            "connection_method"=> "SFTP", 
+            ];
+        $response = $this->actingAs($user, 'api')->json('PUT', "/api/server/update/1?token=$token", $data);
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
 
     }
     

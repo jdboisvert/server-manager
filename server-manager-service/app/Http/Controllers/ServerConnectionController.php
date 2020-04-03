@@ -138,10 +138,10 @@ class ServerConnectionController extends Controller
         $this->validate($request, [
             'connection_name' => 'required_without_all:connection_method,hostname,port,username,password|string|max:255',
             'connection_method' => 'required_without_all:connection_name,hostname,port,username,password|string|max:255',
-            'hostname' => 'required_without_all:connection_name,connection_name,port,username,password|string|max:255',
-            'port' => 'required_without_all:connection_name,connection_name,hostname,username,password|integer|min:0|max:65535',
-            'username' => 'required_without_all:connection_name,connection_name,hostname,port,password|string|max:255',
-            'password' => 'required_without_all:connection_name,connection_name,hostname,port,username|string|max:255'
+            'hostname' => 'required_without_all:connection_name,connection_method,port,username,password|string|max:255',
+            'port' => 'required_without_all:connection_name,connection_method,hostname,username,password|integer|min:0|max:65535',
+            'username' => 'required_without_all:connection_name,connection_method,hostname,port,password|string|max:255',
+            'password' => 'required_without_all:connection_name,connection_method,hostname,port,username|string|max:255'
         ]);
 
         try {
