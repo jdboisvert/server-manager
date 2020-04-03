@@ -13,19 +13,7 @@ class ServerConnectionAPITest extends TestCase
     private $emailOfTestUser = 'jeff@test.com';
     private $passwordOfTestUser = 'password';
     
-    use DatabaseMigrations {
-        runDatabaseMigrations as baseRunDatabaseMigrations;
-    }
-
-    /**
-     * Used to set up the database and reseed it between tests
-     * to ensure database is in a constant state
-     */ 
-    public function runDatabaseMigrations()
-    {
-        $this->baseRunDatabaseMigrations();
-        $this->artisan('db:seed');
-    }
+    use DatabaseTransactions;
     
     /**
      * Used to login into the API to perform test

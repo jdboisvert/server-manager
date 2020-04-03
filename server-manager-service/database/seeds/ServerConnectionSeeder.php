@@ -48,6 +48,17 @@ class ServerConnectionSeeder extends Seeder
             'created_at' => $mytime = Carbon\Carbon::now()->toDateTimeString(),
             'user_id' => 1
         ]);
+        
+        DB::table('server_connections')->insert([
+            'connection_name' => 'Random Test Connection Other',
+            'connection_method' => 'SSH',
+            'hostname' =>  'this.is.fake.test4.com',
+            'port' => 1336,
+            'username' => 'test_123',
+            'password' => Hash::make('password'),
+            'created_at' => $mytime = Carbon\Carbon::now()->toDateTimeString(),
+            'user_id' => 2
+        ]);
 
 
     }

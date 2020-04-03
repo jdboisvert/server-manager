@@ -21,5 +21,13 @@ class UserSeeder extends Seeder
             'password' =>  Hash::make('password'),
             'created_at' => $mytime = Carbon\Carbon::now()->toDateTimeString(),
         ]);
+        
+        DB::table('users')->insert([
+            'name' => 'Jeffrey 2',
+            'email' => 'jeff@test2.com',
+            'password' =>  Hash::make('password'),
+            'created_at' => $mytime = Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+        
     }
 }
