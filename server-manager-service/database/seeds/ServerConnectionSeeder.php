@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * This class is mainly used to provide content for the application for testing purposes
+ * This class is mainly used to provide server connections for the application for testing purposes
  */ 
 class ServerConnectionSeeder extends Seeder
 {
