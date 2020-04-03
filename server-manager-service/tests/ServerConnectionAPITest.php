@@ -120,7 +120,7 @@ class ServerConnectionAPITest extends TestCase
         
     /**
      * A test to validate the correct 
-     * HTTP 401 is returned when creating a server
+     * HTTP 401 is returned when creating a server when unauthorized
      * @return void
      */
     public function testCreateServerUnauthorized(){
@@ -161,6 +161,88 @@ class ServerConnectionAPITest extends TestCase
         $response = $this->actingAs($user, 'api')->json('POST', "/api/create?token=$token", $data);
         
         $response->seeStatusCode(422);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 200 is returned when viewing a server
+     * and response is in the correct format
+     * @return void
+     */
+    public function testServerDetails(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('GET', "/api/server/details/1?token=$token");
+        
+        $response->seeStatusCode(200);
+        $response->seeJsonStructure([
+            'server' => 
+                [
+                    'id',
+                    'created_at',
+                    'updated_at',
+                    'connection_name',
+                    'connection_method',
+                    'hostname',
+                    'port',
+                    'username',
+                    'user_id'
+                ]
+        ]);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 404 is returned when viewing a server
+     * that does not exist
+     * @return void
+     */
+    public function testServerDetailsNoServer(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('GET', "/api/server/details/166?token=$token");
+        
+        $response->seeStatusCode(404);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 401 is returned when viewing a server when unauthorized
+     * @return void
+     */
+    public function testServerDetailsUnauthorized(){
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('GET', "/api/server/details/1");
+        
+        $response->seeStatusCode(401);
+
+    }
+    
+    /**
+     * A test to validate the correct 
+     * HTTP 403 is returned when viewing a server
+     * that does not belong to a user (does not have access)
+     * @return void
+     */
+    public function testServerDetailsNotBelongingToUser(){
+        
+        //Used to to login to get token
+        $token = $this->login();
+        
+        $user = User::where('email', $this->emailOfTestUser)->first();
+        $response = $this->actingAs($user, 'api')->json('GET', "/api/server/details/4?token=$token");
+        
+        $response->seeStatusCode(403);
 
     }
     
