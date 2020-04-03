@@ -999,7 +999,7 @@
                 "illuminate/session": "^7.0",
                 "illuminate/support": "^7.0",
                 "php": "^7.2.5",
-                "symfony/http-foundation": "^5.0",
+                "symfony/http-foundation": "5.0.7",
                 "symfony/http-kernel": "^5.0",
                 "symfony/mime": "^5.0"
             },
@@ -1247,7 +1247,7 @@
                 "illuminate/support": "^7.0",
                 "php": "^7.2.5",
                 "symfony/finder": "^5.0",
-                "symfony/http-foundation": "^5.0"
+                "symfony/http-foundation": "5.0.7"
             },
             "suggest": {
                 "illuminate/console": "Required to use the session:table command (^7.0)."
@@ -1458,7 +1458,7 @@
                 "illuminate/support": "^7.0",
                 "illuminate/translation": "^7.0",
                 "php": "^7.2.5",
-                "symfony/http-foundation": "^5.0",
+                "symfony/http-foundation": "5.0.7",
                 "symfony/mime": "^5.0"
             },
             "suggest": {
@@ -1579,7 +1579,7 @@
                 "php": "^7.2.5",
                 "symfony/console": "^5.0",
                 "symfony/error-handler": "^5.0",
-                "symfony/http-foundation": "^5.0",
+                "symfony/http-foundation": "5.0.7",
                 "symfony/http-kernel": "^5.0",
                 "symfony/mime": "^5.0",
                 "symfony/var-dumper": "^5.0",
@@ -2596,7 +2596,7 @@
                 "symfony/config": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/expression-language": "^4.4|^5.0",
-                "symfony/http-foundation": "^4.4|^5.0",
+                "symfony/http-foundation": "5.0.7",
                 "symfony/service-contracts": "^1.1|^2",
                 "symfony/stopwatch": "^4.4|^5.0"
             },
@@ -2831,7 +2831,7 @@
                 "psr/log": "~1.0",
                 "symfony/error-handler": "^4.4|^5.0",
                 "symfony/event-dispatcher": "^5.0",
-                "symfony/http-foundation": "^4.4|^5.0",
+                "symfony/http-foundation": "5.0.7",
                 "symfony/polyfill-ctype": "^1.8",
                 "symfony/polyfill-php73": "^1.9"
             },
