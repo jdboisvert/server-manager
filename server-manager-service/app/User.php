@@ -34,7 +34,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
     
     /**
-     * Get all of the trips for the user.
+     * Get all of the servers for the user.
      */
     public function serverConnections()
     {

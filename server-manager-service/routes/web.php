@@ -34,12 +34,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 $router->group(
     ['prefix' => 'api', 'middleware' => 'jwt.auth'], 
     function() use ($router) {
-        $router->post('list', 'ServerConnectionController@getAllServerConnections');
+        $router->get('list', 'ServerConnectionController@getAllServerConnections');
         
         $router->post('create', 'ServerConnectionController@createServerConnection');
-        $router->post('server/details/{id}', 'ServerConnectionController@readServerConnection');
-        $router->post('update', 'ServerConnectionController@updateServerConnection');
-        $router->post('delete', 'ServerConnectionController@deleteServerConnection');
+        $router->get('server/details/{id}', 'ServerConnectionController@readServerConnection');
+        $router->post('server/update/{id}', 'ServerConnectionController@updateServerConnection');
+        $router->post('server/delete/{id}', 'ServerConnectionController@deleteServerConnection');
         
     }
 );

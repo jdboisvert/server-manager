@@ -29,6 +29,16 @@ class ServerConnection extends Model
     ];
     
     /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password'
+    ];
+    
+    
+    /**
      * Get the user that owns the server connection.
      */
     public function user()
